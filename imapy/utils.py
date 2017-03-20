@@ -58,6 +58,12 @@ elif six.PY3:
         """Convert to string"""
         return text.decode('utf-8', 'ignore')
 
+    def b_to_str_gb18030(text):
+        return text.decode('gb18030', 'ignore')
+
+    def b_to_str_gb2312(text):
+        return text.decode('gb2312', 'ignore')
+
     def str_to_b(text):
         """Convert string to bytes"""
         return text.encode('utf-8')
