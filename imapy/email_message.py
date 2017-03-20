@@ -130,6 +130,15 @@ class EmailMessage(CaseInsensitiveDict):
                 content_type = part.get_content_type()
                 if content_type == 'text/plain':
                     # convert text
+                    msg_to = decode_header(self.email_obj['to'])
+                    _decode = msg_to[1][1]    # get decode
+
+                    if _decode == 'gb18030':
+                        text = utils.b_to_str_gb18030(part.get_payload(decode=True))
+                    elif _decode == 'gb2312':
+                        text = utils.b_to_str_gb2312(part.get_payload(decode=True))
+                    else:
+                        text = utils.b_to_str(part.get_payload(decode=True))
                     text = utils.b_to_str(part.get_payload(decode=True))
                     self['text'].append(
                         {
@@ -141,7 +150,15 @@ class EmailMessage(CaseInsensitiveDict):
                     )
                 elif content_type == 'text/html':
                     # convert html
-                    html = utils.b_to_str(part.get_payload(decode=True))
+                    msg_to = decode_header(self.email_obj['to'])
+                    _decode = msg_to[1][1]    # get decode
+
+                    if _decode == 'gb18030':
+                        html = utils.b_to_str_gb18030(part.get_payload(decode=True))
+                    elif _decode == 'gb2312':
+                        html = utils.b_to_str_gb2312(part.get_payload(decode=True))
+                    else:
+                        html = utils.b_to_str(part.get_payload(decode=True))
                     self['html'].append(html)
                 else:
                     try:
